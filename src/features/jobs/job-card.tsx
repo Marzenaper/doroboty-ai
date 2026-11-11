@@ -56,7 +56,7 @@ export function JobCard({ job, saved }: { job: JobWithCompany; saved?: boolean }
           )}
         </div>
         <SalaryFact job={job} />
-        <Link className="pp-detail-button" to={`/oferty/${job.slug}`}>
+        <Link className="pp-detail-button" data-analytics-offer-link to={`/oferty/${job.slug}`}>
           Zobacz rolę <ArrowUpRight className="pp-icon" />
         </Link>
       </div>
