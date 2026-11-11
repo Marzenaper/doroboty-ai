@@ -1,5 +1,6 @@
 import { Link, useLocation, useParams, useSearchParams } from "react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { trackApplicationEvent } from "./analytics";
 import { ArrowUpRight, Users, MapPin, BriefcaseBusiness, Bookmark } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Search, ArrowRight, Monitor, X } from "lucide-react";
@@ -344,6 +345,13 @@ export function JobPage() {
   const { state, run } = usePrototype();
   const person = currentPerson(state);
   const job = publishedJobs(state).find((x) => x.slug === slug);
+  const jobId = job?.id;
+  const lastViewedJob = useRef<string>(undefined);
+  useEffect(() => {
+    if (!jobId || lastViewedJob.current === jobId) return;
+    lastViewedJob.current = jobId;
+    trackApplicationEvent("job_viewed", jobId);
+  }, [jobId]);
   if (!job) return <NotFound />;
   const saved = state.saved.some((x) => x.candidateId === person?.id && x.jobId === job.id);
   const submitted = state.applications.find(
