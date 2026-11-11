@@ -7,7 +7,7 @@ import { BackLink } from "@/components/back-link";
 import { ResponsivePanel } from "@/components/responsive-panel";
 import { SalaryFact } from "@/features/jobs/salary-fact";
 import { functionLabels } from "@/features/jobs/presentation";
-import peopleArt from "../../../docs/design-system/agent-kit/assets/people.png";
+const peopleArt = "/poster-neon/astronauts.png";
 import { CompanyLogo } from "@/features/jobs/company-logo";
 import { JobCard } from "@/features/jobs/job-card";
 import { JobFiltersForm } from "@/features/jobs/job-filters";
@@ -169,7 +169,7 @@ export function JobsPage() {
             <img
               className="pp-people-art"
               src={peopleArt}
-              alt="Dwie osoby pracujące razem z laptopem"
+              alt="Kosmonautka i kosmonauta w różowych wizjerach z turkusową orbitą"
             />
           </div>
           <form

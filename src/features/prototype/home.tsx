@@ -1,13 +1,10 @@
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { JobCard } from "@/features/jobs/job-card";
 import { usePrototype } from "./store";
 import { publishedJobs } from "./model";
 import { cn } from "@/lib/utils";
-
-import peopleArt from "../../../docs/design-system/agent-kit/assets/people.png";
 
 const categories = [
   {
@@ -33,35 +30,32 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="home-intro bg-muted/25 shadow-[var(--gui-divider-bottom-shadow)]">
-        <div className="mx-auto grid max-w-[1360px] gap-12 px-5 py-16 lg:grid-cols-[1.3fr_0.7fr] lg:px-8 lg:py-24">
-          <div>
-            <Badge variant="secondary" className="px-3 py-1 text-xs">
-              Dobra robota. Z AI w środku.
-            </Badge>
-            <h1 className="mt-6 max-w-4xl text-5xl leading-[var(--gui-leading-xxl)] font-semibold tracking-[var(--gui-tracking-xs)] sm:text-6xl lg:text-7xl">
-              Praca dla ludzi, którzy dowożą z AI.
+      <section className="neon-home-hero">
+        <div className="neon-home-inner">
+          <div className="neon-home-copy">
+            <h1>
+              Przyszłość
+              <br />
+              nie czeka.
+              <br />
+              <span>Do roboty.</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Wyselekcjonowane role, w których AI jest częścią odpowiedzialności, decyzji i wyniku
-              pracy — nie dopiskiem w employer brandingu.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/oferty" className={buttonVariants({ size: "lg" })}>
-                Zobacz oferty <ArrowRight />
-              </Link>
-              <Link
-                to="/metodologia"
-                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
-              >
-                Jak wybieramy role
-              </Link>
-            </div>
+            <p>Znajdź swoje miejsce w świecie AI.</p>
+            <Link to="/oferty" className={cn(buttonVariants({ size: "lg" }), "neon-home-cta")}>
+              Zobacz oferty <ArrowRight />
+            </Link>
           </div>
-          <img className="people-art" src={peopleArt} alt="Dwie osoby pracujące razem z laptopem" />
+          <span className="neon-caption">LUDZIE × POMYSŁY × AI</span>
         </div>
       </section>
-
+      <section className="neon-featured">
+        <h2>Oferty dla Ciebie</h2>
+        <div className="neon-featured-grid">
+          {latestJobs.slice(0, 3).map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      </section>
       <section className="mx-auto max-w-[1360px] px-5 py-16 lg:px-8 lg:py-20">
         <p className="text-xs font-medium tracking-[var(--gui-tracking-xl)] text-muted-foreground">
           Trzy sposoby pracy z AI
@@ -85,32 +79,6 @@ export default function HomePage() {
               </Link>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="bg-muted/25 shadow-[var(--gui-divider-top-shadow)]">
-        <div className="mx-auto max-w-[1360px] px-5 py-16 lg:px-8 lg:py-20">
-          <div className="flex flex-wrap items-end justify-between gap-5">
-            <div>
-              <p className="text-xs font-medium tracking-[var(--gui-tracking-xl)] text-muted-foreground">
-                Aktualne role
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[var(--gui-tracking-s)] sm:text-4xl">
-                Najnowsze oferty
-              </h2>
-            </div>
-            <Link
-              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--gui-link)] hover:underline"
-              to="/oferty"
-            >
-              Wszystkie oferty <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-8 pp-job-list">
-            {latestJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
         </div>
       </section>
     </>

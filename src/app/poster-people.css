@@ -49,7 +49,7 @@ textarea:focus-visible {
   border-radius: 10px;
 }
 header:has([aria-label="Główna nawigacja"]) {
-  background: #fff;
+  background: var(--gui-surface);
   backdrop-filter: none;
 }
 header:has([aria-label="Główna nawigacja"]) > div {
@@ -64,7 +64,7 @@ header a[aria-label="DoRoboty.ai — strona główna"] {
   line-height: 1;
 }
 footer {
-  background: #fff;
+  background: var(--gui-surface);
 }
 .home-intro > div {
   max-width: 1280px;
@@ -90,14 +90,14 @@ footer {
 .visitors-card,
 .success-panel {
   border-radius: 24px;
-  background: #fff;
+  background: var(--gui-surface);
 }
 .prototype-panel h2 {
   margin-bottom: 12px;
 }
 .prototype-form {
   padding: 28px;
-  background: #fff;
+  background: var(--gui-surface);
   border: 1px solid var(--foreground);
   border-radius: 24px;
   width: 100%;
@@ -126,12 +126,12 @@ footer {
 }
 .nav-active,
 .nav-active:hover {
-  background: #181818;
-  color: #fff;
+  background: var(--gui-text);
+  color: var(--gui-surface);
 }
 .sidebar,
 .topbar {
-  background: #fff;
+  background: var(--gui-surface);
 }
 .workspace-label {
   padding-block: 24px;
@@ -170,7 +170,7 @@ footer {
 }
 [data-slot="dialog-content"],
 [data-slot="alert-dialog-content"] {
-  border: 1px solid #181818;
+  border: 1px solid var(--gui-text);
 }
 @media (max-width: 1100px) {
   .home-intro h1 {

@@ -1,3 +1,5 @@
+> Active visual direction: the owner requested **Poster + Neon** on 2026-11-10. Read [integration rules](docs/design-system/POSTER-NEON.md). This supersedes older Poster People visual requirements below. Product, data and interaction rules remain in force.
+
 # DoRoboty.ai — AIPH3 prototype
 
 A frontend-only job marketplace for participants to extend and test. Built with React, TypeScript and Vite, using Base UI components. The required visual direction for new and changed screens is the accepted Poster People design system.

@@ -1,9 +1,9 @@
 /* Host-owned namespaced adaptation of Poster People 1.0.0; see immutable kit provenance. */
 :root {
   color-scheme: light;
-  --pp-paper: #f4f4f0;
-  --pp-surface: #fff;
-  --pp-ink: #181818;
+  --pp-paper: var(--gui-canvas);
+  --pp-surface: var(--gui-surface);
+  --pp-ink: var(--gui-text);
   --pp-muted: #5e5a5c;
   --pp-line: #d8d5d1;
   --pp-action: #ff90e8;
@@ -491,7 +491,7 @@
   gap: 20px;
   padding: 25px;
   border-bottom: 1px solid var(--pp-ink);
-  background: white;
+  background: var(--gui-surface);
 }
 .pp-dialog-heading h2 {
   font-size: 24px;
@@ -526,7 +526,7 @@
   position: sticky;
   bottom: 0;
   padding: 15px 24px max(15px, env(safe-area-inset-bottom));
-  background: white;
+  background: var(--gui-surface);
   border-top: 1px solid var(--pp-ink);
 }
 @media (max-width: 1100px) {

@@ -1,3 +1,5 @@
+> Active visual direction: the owner requested **Poster + Neon** on 2026-11-10. Read [integration rules](docs/design-system/POSTER-NEON.md). This supersedes older Poster People visual requirements below. Product, data and interaction rules remain in force.
+
 # Working on DoRoboty.ai Case
 
 This is an AIPH3 teaching prototype, separate from the public production portal.

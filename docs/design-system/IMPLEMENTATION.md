@@ -1,3 +1,5 @@
+> Active visual direction: the owner requested **Poster + Neon** on 2026-11-10. Read [integration rules](POSTER-NEON.md). This supersedes older Poster People visual requirements below. Product, data and interaction rules remain in force.
+
 # Poster People — host implementation rules
 
 Read with the [project guide](README.md), [host catalog](HOST-COMPONENTS.md), [current status](STATUS.md), immutable [component API](agent-kit/components/API.md) and [human reference](agent-kit/reference/components.md). These are project integration rules, not a replacement v1 kit or a new reference release. Use the [acceptance checklist](VERIFICATION.md) before claiming completion.

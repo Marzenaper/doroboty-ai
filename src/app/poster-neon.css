@@ -1,0 +1,366 @@
+@font-face {
+  font-family: Anton;
+  src: url("/poster-neon/anton.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: Inter;
+  src: url("/poster-neon/inter.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --theme-name: "Poster + Neon";
+  --gui-font-brand: Anton, sans-serif;
+  --gui-font-editorial: Anton, sans-serif;
+  --gui-font-ui: Inter, sans-serif;
+  --gui-font-data: Inter, sans-serif;
+  --gui-neutral-1: #17131b;
+  --gui-neutral-2: #2b202b;
+  --gui-neutral-3: #211821;
+  --gui-neutral-4: #463646;
+  --gui-neutral-5: #706070;
+  --gui-neutral-6: #a99ba6;
+  --gui-neutral-7: #c9bdaf;
+  --gui-neutral-8: #c9bdaf;
+  --gui-neutral-9: #e0d8cf;
+  --gui-neutral-10: #f0e3ce;
+  --gui-color-1: #12e4d2;
+  --gui-color-1-transparent: #123f3e;
+  --gui-color-2: #12e4d2;
+  --gui-color-3: #ff4099;
+  --gui-canvas: #211821;
+  --gui-surface: #2b202b;
+  --gui-surface-muted: #211821;
+  --gui-text: #f0e3ce;
+  --gui-text-muted: #c9bdaf;
+  --gui-text-muted-accessible: #c9bdaf;
+  --gui-edge: #a99ba6;
+  --gui-accent: #12e4d2;
+  --gui-accent-text: #17131b;
+  --gui-accent-text-accessible: #17131b;
+  --gui-focus: #f0e3ce;
+  --gui-link: #12e4d2;
+  --gui-control: #17131b;
+  --gui-control-hover: #352735;
+  --gui-danger: #ffb5b5;
+  --gui-radius-xs: 2px;
+  --gui-radius-s: 2px;
+  --gui-radius-m: 4px;
+  --gui-radius-l: 4px;
+  --gui-radius-xl: 4px;
+  --gui-radius-full: 4px;
+  --gui-edge-shadow: inset 0 0 0 1px #a99ba6;
+  --gui-shadow-m: inset 0 0 0 1px #a99ba6;
+  --primary: #12e4d2;
+  --primary-foreground: #17131b;
+  --pp-paper: #211821;
+  --pp-surface: #2b202b;
+  --pp-ink: #f0e3ce;
+  --pp-muted: #c9bdaf;
+  --pp-line: #a99ba6;
+  --pp-action: #12e4d2;
+  --pp-action-hover: #6af1e5;
+  --pp-fact: #c9bdaf;
+  --pp-yellow: #ff4099;
+  --pp-surface-hover: #352735;
+  --pp-radius: 2px;
+  --pp-radius-small: 2px;
+  --pp-radius-large: 4px;
+  --pp-font-heading: Anton, sans-serif;
+  --pp-font: Inter, sans-serif;
+}
+body {
+  background: #211821 url("/poster-neon/paper.svg") repeat;
+}
+header:has([aria-label="Główna nawigacja"]),
+footer {
+  background: transparent;
+}
+header a[aria-label="DoRoboty.ai — strona główna"] {
+  font-family: Anton, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  font-size: 32px;
+}
+.neon-ai {
+  color: #ff4099;
+}
+header a[aria-label="DoRoboty.ai — strona główna"] > svg {
+  display: none;
+}
+:is(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid #f0e3ce;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #17131b;
+}
+.neon-home-hero {
+  background: url("/poster-neon/hero-art.png") center/100% auto no-repeat;
+}
+.neon-home-inner {
+  position: relative;
+  width: min(1280px, calc(100% - 80px));
+  margin: auto;
+  min-height: clamp(500px, 43vw, 660px);
+  display: flex;
+  align-items: center;
+}
+.neon-home-copy {
+  width: 50%;
+  padding: 24px 0 40px;
+  z-index: 1;
+}
+.neon-home-copy h1 {
+  font:
+    400 clamp(72px, 8.4vw, 124px)/1.06 Anton,
+    sans-serif;
+  letter-spacing: -0.025em;
+}
+.neon-home-copy h1 span {
+  position: relative;
+}
+.neon-home-copy h1 span:after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 0;
+  bottom: -8px;
+  height: 9px;
+  background: #ff4099;
+  transform: rotate(-2deg);
+}
+.neon-home-copy p {
+  font-size: clamp(17px, 1.8vw, 25px);
+  margin: 30px 0 24px;
+}
+.neon-home-cta {
+  border-radius: 2px;
+  background: #12e4d2;
+  color: #17131b;
+  font-size: 20px;
+  min-height: 52px;
+  box-shadow: 0 0 24px #12e4d255;
+}
+.neon-caption {
+  position: absolute;
+  right: 7%;
+  bottom: 9%;
+  color: #17131b;
+  background: #f0e3ce;
+  padding: 8px 14px;
+  font:
+    600 12px Inter,
+    sans-serif;
+  transform: rotate(-1deg);
+}
+.neon-featured {
+  width: min(1280px, calc(100% - 80px));
+  margin: auto;
+  border-top: 1px solid #c9bdaf;
+  padding: 20px 0 40px;
+}
+.neon-featured h2 {
+  font-size: 44px;
+  margin-bottom: 24px;
+}
+.neon-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.neon-featured-grid .pp-job-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 24px;
+  border-color: #12e4d2;
+  gap: 16px;
+}
+.neon-featured-grid .pp-job-card:nth-child(2) {
+  border-color: #f0e3ce;
+}
+.neon-featured-grid .pp-job-card:nth-child(3) {
+  border-color: #ff4099;
+}
+.neon-featured-grid .pp-company-logo,
+.neon-featured-grid .pp-job-age {
+  display: none;
+}
+.neon-featured-grid .pp-job-side {
+  width: 100%;
+  align-items: stretch;
+}
+.neon-featured-grid .pp-job-title {
+  font-size: 28px;
+}
+.pp-intro-grid {
+  display: block;
+  position: relative;
+  min-height: 440px;
+  background: url("/poster-neon/hero-art.png") center/100% auto no-repeat;
+  padding: 48px 0;
+}
+.pp-intro-copy {
+  width: 49%;
+  position: relative;
+  z-index: 1;
+}
+.pp-intro-copy h1 {
+  font-size: clamp(60px, 6.5vw, 92px);
+}
+.pp-intro-copy h1 span:before {
+  height: 6px;
+  bottom: -8px;
+  background: #ff4099;
+}
+.pp-people-art {
+  display: none;
+}
+.pp-offer-hero {
+  background: url("/poster-neon/hero-art.png") right top/auto 350px no-repeat;
+  padding-top: 28px;
+}
+.pp-offer-hero h1 {
+  max-width: 58%;
+}
+.pp-search-submit,
+.pp-detail-button {
+  color: #17131b;
+  background: #12e4d2;
+  border-radius: 2px;
+}
+.pp-salary,
+.pp-job-tags span {
+  color: #17131b;
+}
+.pp-category-tab.pp-selected {
+  background: #12e4d2;
+  color: #17131b;
+}
+.pp-job-card,
+.prototype-panel,
+[data-slot="dialog-content"],
+[data-slot="input"],
+.pp-search-form,
+.pp-filter-button {
+  border-radius: 2px;
+}
+@media (max-width: 800px) {
+  .neon-featured-grid {
+    grid-template-columns: 1fr;
+  }
+  .neon-home-inner,
+  .neon-featured {
+    width: calc(100% - 40px);
+  }
+  .neon-home-hero {
+    background: none;
+  }
+  .neon-home-inner {
+    display: block;
+    padding-bottom: 85vw;
+    min-height: 0;
+  }
+  .neon-home-inner:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 85vw;
+    background: url("/poster-neon/astronauts.png") center/contain no-repeat;
+  }
+  .neon-home-copy {
+    width: 100%;
+    padding: 28px 0;
+  }
+  .neon-home-copy h1 {
+    font-size: clamp(56px, 14vw, 92px);
+  }
+  .neon-caption {
+    display: none;
+  }
+  .pp-intro-grid {
+    min-height: 0;
+    background: none;
+    padding: 30px 0;
+  }
+  .pp-intro-copy {
+    width: 100%;
+  }
+  .pp-intro-grid:after {
+    content: "";
+    display: block;
+    height: 80vw;
+    max-height: 420px;
+    background: url("/poster-neon/astronauts.png") center/contain no-repeat;
+  }
+  .pp-offer-hero {
+    background: none;
+  }
+  .pp-offer-hero h1 {
+    max-width: 100%;
+  }
+  header:has([aria-label="Główna nawigacja"]) > div {
+    height: auto;
+    min-height: 80px;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+  }
+}
+/* Final shared control overrides for the active dark direction. */
+html .pp-salary-tag,
+html .pp-job-tags span {
+  color: #17131b;
+  background: #c9bdaf;
+  border-radius: 2px;
+}
+html .pp-view-link[aria-current="page"] {
+  color: #17131b;
+  background: #12e4d2;
+  border-radius: 2px;
+}
+html header [data-slot="button"],
+html header a[class*="bg-"] {
+  background: #2b202b;
+  color: #f0e3ce;
+  border: 1px solid #a99ba6;
+  border-radius: 2px;
+}
+html .neon-featured-grid .pp-job-card > [data-company-logo] {
+  display: none;
+}
+html .neon-featured-grid .pp-job-side {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  gap: 12px;
+}
+html .neon-featured-grid .pp-job-card {
+  min-height: 0;
+}
+html .neon-featured-grid .pp-job-side-top {
+  display: none;
+}
+html .neon-featured-grid .pp-job-tags {
+  display: none;
+}
+html header a[aria-label="DoRoboty.ai — strona główna"] > :first-child:not(span) {
+  display: none;
+}
+@media (max-width: 800px) {
+  html header nav[aria-label="Główna nawigacja"] {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  html header nav[aria-label="Główna nawigacja"] > a.hidden {
+    display: inline-flex;
+    font-size: 12px;
+  }
+  html header:has([aria-label="Główna nawigacja"]) > div {
+    gap: 16px;
+  }
+}

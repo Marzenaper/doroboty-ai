@@ -4,7 +4,7 @@
   padding: 24px 28px;
   border: 1px solid var(--gui-text);
   border-radius: 24px;
-  background: white;
+  background: var(--gui-surface);
 }
 .record-tabs {
   display: flex;

@@ -20,9 +20,9 @@ import { currentPerson } from "./model";
 import { usePrototype } from "./store";
 import { cn } from "@/lib/utils";
 const navigation = [
-  { to: "/oferty", label: "Oferty" },
-  { to: "/metodologia", label: "Metodologia" },
-  { to: "/auth/sign-in?audience=employer&next=/app/oferty", label: "Dla firm" },
+  { to: "/oferty", label: "Oferty pracy" },
+  { to: "/auth/sign-in?audience=candidate", label: "Dla kandydata" },
+  { to: "/auth/sign-in?audience=employer&next=/app/oferty", label: "Dla pracodawcy" },
 ];
 
 export function Notice({ children }: { children: ReactNode }) {
@@ -212,7 +212,9 @@ export function Shell() {
                 aria-label="DoRoboty.ai — strona główna"
               >
                 <BrandMark />
-                <span>DoRoboty.ai</span>
+                <span>
+                  DoRoboty<span className="neon-ai">.ai</span>
+                </span>
               </Link>
               <nav aria-label="Główna nawigacja" className="flex items-center gap-2 sm:gap-5">
                 {navigation.map((item) => (
