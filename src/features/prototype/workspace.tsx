@@ -16,6 +16,7 @@ import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
+import posthog, { isPostHogEnabled } from "@/lib/posthog";
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -156,8 +157,10 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           location: String(data.get("location")),
         },
       })
-    )
+    ) {
+      if (isPostHogEnabled) posthog.capture("profile_updated");
       setMessage("Profil został zapisany.");
+    }
   }
   return (
     <>
@@ -282,6 +285,17 @@ export function ApplyPage() {
       return;
     }
     if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent })) {
+      if (isPostHogEnabled) {
+        posthog.capture("application_submitted", {
+          job_id: job!.id,
+          answer_length: answerLength,
+        });
+        posthog.logger.info("application submitted", {
+          event: "application_submission_completed",
+          job_id: job!.id,
+          answer_length: answerLength,
+        });
+      }
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -387,8 +401,15 @@ export function ApplyPage() {
                 disabled={submitted}
                 variant="outline"
                 onClick={() => {
-                  if (run({ type: "draft", jobId: job.id, notes, generated, answer }))
+                  if (run({ type: "draft", jobId: job.id, notes, generated, answer })) {
+                    if (isPostHogEnabled) {
+                      posthog.capture("application_draft_saved", {
+                        job_id: job.id,
+                        answer_length: answerLength,
+                      });
+                    }
                     setMessage("Szkic został zapisany.");
+                  }
                 }}
               >
                 Zapisz szkic

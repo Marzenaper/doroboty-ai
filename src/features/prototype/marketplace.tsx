@@ -26,6 +26,7 @@ import { usePrototype } from "./store";
 import { currentPerson, publishedJobs } from "./model";
 import { NotFound } from "./shell";
 import { cn } from "@/lib/utils";
+import posthog, { isPostHogEnabled } from "@/lib/posthog";
 
 function LocalMap({ jobs }: { jobs: JobWithCompany[] }) {
   const [selected, setSelected] = useState<string | null>(null);
@@ -147,6 +148,19 @@ export function JobsPage() {
       else next.delete(key);
     }
     setParams(next);
+    const hasQuery = Boolean(String(data.get("query") ?? "").trim());
+    const hasLocation = Boolean(String(data.get("location") ?? "").trim());
+    if (isPostHogEnabled) {
+      posthog.capture("job_search_performed", {
+        has_query: hasQuery,
+        has_location: hasLocation,
+      });
+      posthog.logger.info("job search completed", {
+        event: "job_search_completed",
+        has_query: hasQuery,
+        has_location: hasLocation,
+      });
+    }
   }
   const locations = [...new Set(all.flatMap((x) => x.locations))];
   return (
@@ -430,7 +444,15 @@ export function JobPage() {
                     variant="outline"
                     aria-label="Zapisz ofertę"
                     aria-pressed={saved}
-                    onClick={() => run({ type: "toggle_saved", jobId: job.id })}
+                    onClick={() => {
+                      if (run({ type: "toggle_saved", jobId: job.id }) && isPostHogEnabled) {
+                        posthog.capture(saved ? "job_unsaved" : "job_saved", {
+                          job_id: job.id,
+                          job_category: job.category,
+                          source: "job_detail",
+                        });
+                      }
+                    }}
                   >
                     <Bookmark className={cn(saved && "fill-current")} />
                     Zapisz ofertę
