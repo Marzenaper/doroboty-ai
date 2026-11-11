@@ -1,3 +1,5 @@
+import { ProjectImages } from "./project-images";
+import { ProjectRecordings } from "./record-answer";
 import type { ReactNode, Ref } from "react";
 import { BackLink } from "@/components/back-link";
 import { ProcessTimeline } from "@/components/process-timeline";
@@ -24,7 +26,17 @@ export function ApplicationRecord({
 }: {
   application: Pick<
     Application,
-    "candidateId" | "candidateName" | "jobTitle" | "stage" | "answer" | "cv" | "score" | "summary"
+    | "candidateId"
+    | "candidateName"
+    | "jobTitle"
+    | "stage"
+    | "answer"
+    | "projectDescription"
+    | "projectRecordings"
+    | "projectImages"
+    | "cv"
+    | "score"
+    | "summary"
   >;
   companyName: string;
   audience: "candidate" | "employer";
@@ -74,7 +86,23 @@ export function ApplicationRecord({
               content: (
                 <>
                   <h3>Przesłana aplikacja</h3>
+                  {!candidate && (
+                    <p className="record-caption">
+                      Tu znajdziesz odpowiedź kandydatki lub kandydata oraz dołączony opis projektu
+                      i załączniki. CV jest w osobnej zakładce.
+                    </p>
+                  )}
                   <p>{application.answer}</p>
+                  {application.projectDescription && (
+                    <section className="mt-6" aria-labelledby="submitted-project">
+                      <h3 id="submitted-project">{candidate ? "Twój projekt" : "Opis projektu"}</h3>
+                      <p className="whitespace-pre-wrap wrap-anywhere">
+                        {application.projectDescription}
+                      </p>
+                      <ProjectRecordings recordings={application.projectRecordings ?? []} />
+                      <ProjectImages images={application.projectImages ?? []} />
+                    </section>
+                  )}
                 </>
               ),
             },

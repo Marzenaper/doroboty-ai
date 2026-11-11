@@ -1,3 +1,5 @@
+import { projectImagesSchema, type ProjectImage } from "./project-image";
+import { projectRecordingSchema, type ProjectRecording } from "./project-recording";
 import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
@@ -104,7 +106,12 @@ export const nextStages: Record<Stage, Stage[]> = {
   withdrawn: [],
   hired: [],
 };
+const projectDescriptionSchema = z.string().trim().max(4000).optional();
+const projectRecordingsSchema = z.array(projectRecordingSchema).max(3).optional();
 const applicationSchema = z.object({
+  projectDescription: projectDescriptionSchema,
+  projectRecordings: projectRecordingsSchema,
+  projectImages: projectImagesSchema,
   id,
   candidateId: id,
   jobId: id,
@@ -124,6 +131,9 @@ const applicationSchema = z.object({
     .max(30),
 });
 const draftSchema = z.object({
+  projectDescription: projectDescriptionSchema,
+  projectRecordings: projectRecordingsSchema,
+  projectImages: projectImagesSchema,
   candidateId: id,
   jobId: id,
   notes: text,
@@ -201,13 +211,25 @@ export type Action =
   | { type: "select_person"; id: string | null }
   | { type: "profile"; value: z.infer<typeof profileSchema> }
   | { type: "toggle_saved"; jobId: string }
-  | { type: "draft"; jobId: string; notes: string; generated: string; answer: string }
+  | {
+      type: "draft";
+      jobId: string;
+      notes: string;
+      generated: string;
+      answer: string;
+      projectDescription?: string;
+      projectRecordings?: ProjectRecording[];
+      projectImages?: ProjectImage[];
+    }
   | {
       type: "submit";
       jobId: string;
       notes: string;
       generated: string;
       answer: string;
+      projectDescription?: string;
+      projectRecordings?: ProjectRecording[];
+      projectImages?: ProjectImage[];
       consent: boolean;
     }
   | { type: "stage"; applicationId: string; stage: Stage; note: string }
@@ -298,6 +320,8 @@ export function transition(
     if (!action.consent) fail("Zatwierdź treść i zgodę na przesłanie aplikacji.");
     if (s.applications.some((x) => x.candidateId === p.id && x.jobId === job.id))
       fail("Aplikacja na tę ofertę została już wysłana.");
+    const projectDescription = action.projectDescription?.trim();
+    if (!projectDescription) return fail("Najpierw zakończ rozmowę i zatwierdź opis projektu.");
     s.applications.push(
       applicationSchema.parse({
         id: newId,
@@ -308,6 +332,9 @@ export function transition(
         candidateName: p.name,
         cv: p.cv,
         answer: action.answer,
+        projectDescription,
+        projectRecordings: action.projectRecordings,
+        projectImages: action.projectImages,
         sourceNotes: action.notes,
         generatedAnswer: action.generated,
         score: p.exampleScore,

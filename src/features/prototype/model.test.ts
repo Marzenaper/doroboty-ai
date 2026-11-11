@@ -14,6 +14,7 @@ function submitted() {
       notes: "Original notes",
       generated: "Generated copy",
       answer: "Approved application with sufficient context.",
+      projectDescription: "An approved project description from the candidate.",
       consent: true,
     },
     time,
@@ -29,10 +30,14 @@ describe("coherent browser scenario", () => {
       notes: "",
       generated: "",
       answer: "Approved application with sufficient context.",
+      projectDescription: "An approved project description from the candidate.",
       consent: false,
     };
     expect(() => transition(s, input, time)).toThrow("Zatwierdź");
     expect(() => transition(submitted(), { ...input, consent: true }, time)).toThrow("już wysłana");
+    expect(() => transition(s, { ...input, consent: true, projectDescription: " " }, time)).toThrow(
+      "zatwierdź opis projektu",
+    );
     expect(s.applications).toHaveLength(1);
   });
   it("preserves approved sources while profile and notes evolve", () => {

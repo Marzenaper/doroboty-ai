@@ -38,9 +38,9 @@ export function SettingsPage() {
     }
   }
   function confirm() {
+    setMessage("");
     if (pending === "reset") {
-      reset();
-      setMessage("Przywrócono scenariusz początkowy.");
+      if (reset()) setMessage("Przywrócono scenariusz początkowy.");
     } else if (importState(raw)) {
       setMessage("Dane zostały zaimportowane.");
     }

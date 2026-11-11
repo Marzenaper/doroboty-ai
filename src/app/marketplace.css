@@ -45,7 +45,7 @@
 }
 .pp-view-link[aria-current="page"] {
   background: var(--pp-ink);
-  color: white;
+  color: var(--gui-accent-text);
 }
 .pp-filter-button {
   border: 1px solid var(--pp-ink);
@@ -271,7 +271,7 @@
 }
 .pp-page-button[aria-current="page"] {
   background: var(--pp-ink);
-  color: white;
+  color: var(--gui-accent-text);
 }
 @media (max-width: 360px) {
   header a[aria-label="DoRoboty.ai — strona główna"] {

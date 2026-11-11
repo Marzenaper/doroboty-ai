@@ -1,3 +1,6 @@
+import type { ProjectImage } from "./project-image";
+import type { ProjectRecording } from "./project-recording";
+import { YourProject } from "./your-project";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router";
 import { CheckCircle2, FileText } from "lucide-react";
@@ -50,7 +53,7 @@ export function PersonPicker() {
             <Button
               variant="outline"
               onClick={() => {
-                run({ type: "select_person", id: person.id });
+                if (!run({ type: "select_person", id: person.id })) return;
                 navigate(
                   person.role === "candidate"
                     ? (safeNext ?? "/app")
@@ -239,6 +242,9 @@ export function ApplyPage() {
   const notes = draft?.notes ?? "";
   const generated = draft?.generated ?? "";
   const [answer, setAnswer] = useState(draft?.answer ?? "");
+  const [projectDescription, setProjectDescription] = useState(draft?.projectDescription ?? "");
+  const projectRecordings: ProjectRecording[] = draft?.projectRecordings ?? [];
+  const [projectImages, setProjectImages] = useState<ProjectImage[]>(draft?.projectImages ?? []);
   const [consent, setConsent] = useState(false);
   const [message, setMessage] = useState("");
   const [attempted, setAttempted] = useState(false);
@@ -271,7 +277,7 @@ export function ApplyPage() {
     );
   function submit(e: FormEvent) {
     e.preventDefault();
-    if (submittedOnce.current) return;
+    if (submittedOnce.current || !projectDescription.trim()) return;
     setAttempted(true);
     if (answerLength < MIN_APPLICATION_ANSWER_LENGTH) {
       answerInput.current?.focus();
@@ -281,7 +287,19 @@ export function ApplyPage() {
       document.getElementById("application-consent")?.focus();
       return;
     }
-    if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent })) {
+    if (
+      run({
+        type: "submit",
+        jobId: job!.id,
+        notes,
+        generated,
+        answer,
+        projectDescription,
+        projectRecordings,
+        projectImages,
+        consent,
+      })
+    ) {
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -322,88 +340,117 @@ export function ApplyPage() {
               contextLabel="CV z Twojego profilu"
             />
           </section>
-          <section
-            className="application-form-section application-answer"
-            aria-label="Odpowiedź do aplikacji"
-          >
-            <Field label="Dlaczego pasujesz do tej roli?">
-              <Textarea
-                disabled={submitted}
-                ref={answerInput}
-                required
-                minLength={MIN_APPLICATION_ANSWER_LENGTH}
-                maxLength={12000}
-                aria-invalid={answerInvalid || undefined}
-                aria-describedby="application-answer-help"
-                value={answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                  setConsent(false);
-                }}
-              />
-            </Field>
-            <p
-              id="application-answer-help"
-              role={answerInvalid ? "alert" : undefined}
-              className={answerInvalid ? "error-message" : "text-sm text-muted-foreground"}
-            >
-              {answerInvalid
-                ? `Odpowiedź jest za krótka. Wpisz co najmniej ${MIN_APPLICATION_ANSWER_LENGTH} znaków (obecnie: ${answerLength}).`
-                : `Minimum ${MIN_APPLICATION_ANSWER_LENGTH} znaków. Obecnie: ${answerLength}.`}
-            </p>
-          </section>
-          <div className="application-form-section application-submit">
-            <label className="application-consent">
-              <Checkbox
-                id="application-consent"
-                disabled={submitted}
-                checked={consent}
-                onCheckedChange={(v) => setConsent(v)}
-                aria-invalid={consentInvalid || undefined}
-                aria-describedby={consentInvalid ? "application-consent-error" : undefined}
-                aria-label="Zatwierdzam treść i przesłanie aplikacji"
-              />
-              <span>
-                Zatwierdzam treść aplikacji i przesłanie profilu oraz przykładowego CV pracodawcy.
-              </span>
-            </label>
-            {consentInvalid && (
-              <p id="application-consent-error" className="error-message" role="alert">
-                Zatwierdź treść aplikacji i jej przesłanie pracodawcy.
-              </p>
-            )}
-            <div className="application-actions">
-              <Button
-                ref={sendButton}
-                type="submit"
-                disabled={submitted}
-                className="application-send"
+          <YourProject
+            candidateId={person.id}
+            cv={person.cv}
+            approved={projectDescription}
+            disabled={submitted}
+            approvedRecordings={projectRecordings}
+            approvedImages={projectImages}
+            onApprove={(value, images) => {
+              setProjectImages(images);
+              setProjectDescription(value);
+              setConsent(false);
+            }}
+          />
+          {projectDescription.trim() && (
+            <>
+              <section
+                className="application-form-section application-answer"
+                aria-label="Odpowiedź do aplikacji"
               >
-                {submitted && <CheckCircle2 aria-hidden="true" />}
-                {submitted ? "Wysłano!" : "Wyślij aplikację"}
-              </Button>
-              <Button
-                type="button"
-                disabled={submitted}
-                variant="outline"
-                onClick={() => {
-                  if (run({ type: "draft", jobId: job.id, notes, generated, answer }))
-                    setMessage("Szkic został zapisany.");
-                }}
-              >
-                Zapisz szkic
-              </Button>
-            </div>
-            <p
-              role="status"
-              className={submitted || !message ? "sr-only" : "application-save-status"}
-            >
-              {submitted ? "Wysłano aplikację. Otwieramy listę Twoich aplikacji." : message}
-            </p>
-            <p className="application-help">
-              Prototyp: aplikacja zostaje w tym przeglądarkowym scenariuszu.
-            </p>
-          </div>
+                <Field label="Dlaczego pasujesz do tej roli?">
+                  <Textarea
+                    disabled={submitted}
+                    ref={answerInput}
+                    required
+                    minLength={MIN_APPLICATION_ANSWER_LENGTH}
+                    maxLength={12000}
+                    aria-invalid={answerInvalid || undefined}
+                    aria-describedby="application-answer-help"
+                    value={answer}
+                    onChange={(e) => {
+                      setAnswer(e.target.value);
+                      setConsent(false);
+                    }}
+                  />
+                </Field>
+                <p
+                  id="application-answer-help"
+                  role={answerInvalid ? "alert" : undefined}
+                  className={answerInvalid ? "error-message" : "text-sm text-muted-foreground"}
+                >
+                  {answerInvalid
+                    ? `Odpowiedź jest za krótka. Wpisz co najmniej ${MIN_APPLICATION_ANSWER_LENGTH} znaków (obecnie: ${answerLength}).`
+                    : `Minimum ${MIN_APPLICATION_ANSWER_LENGTH} znaków. Obecnie: ${answerLength}.`}
+                </p>
+              </section>
+              <div className="application-form-section application-submit">
+                <label className="application-consent">
+                  <Checkbox
+                    id="application-consent"
+                    disabled={submitted}
+                    checked={consent}
+                    onCheckedChange={(v) => setConsent(v)}
+                    aria-invalid={consentInvalid || undefined}
+                    aria-describedby={consentInvalid ? "application-consent-error" : undefined}
+                    aria-label="Zatwierdzam treść i przesłanie aplikacji"
+                  />
+                  <span>
+                    Zatwierdzam treść aplikacji i przesłanie profilu oraz przykładowego CV
+                    pracodawcy.
+                  </span>
+                </label>
+                {consentInvalid && (
+                  <p id="application-consent-error" className="error-message" role="alert">
+                    Zatwierdź treść aplikacji i jej przesłanie pracodawcy.
+                  </p>
+                )}
+                <div className="application-actions">
+                  <Button
+                    ref={sendButton}
+                    type="submit"
+                    disabled={submitted}
+                    className="application-send"
+                  >
+                    {submitted && <CheckCircle2 aria-hidden="true" />}
+                    {submitted ? "Wysłano!" : "Wyślij aplikację"}
+                  </Button>
+                  <Button
+                    type="button"
+                    disabled={submitted}
+                    variant="outline"
+                    onClick={() => {
+                      if (
+                        run({
+                          type: "draft",
+                          jobId: job.id,
+                          notes,
+                          generated,
+                          answer,
+                          projectDescription,
+                          projectRecordings,
+                          projectImages,
+                        })
+                      )
+                        setMessage("Szkic został zapisany.");
+                    }}
+                  >
+                    Zapisz szkic
+                  </Button>
+                </div>
+                <p
+                  role="status"
+                  className={submitted || !message ? "sr-only" : "application-save-status"}
+                >
+                  {submitted ? "Wysłano aplikację. Otwieramy listę Twoich aplikacji." : message}
+                </p>
+                <p className="application-help">
+                  Prototyp: aplikacja zostaje w tym przeglądarkowym scenariuszu.
+                </p>
+              </div>
+            </>
+          )}
         </form>
       </div>
       <ConfettiBurst origin={confettiOrigin} />
@@ -444,6 +491,11 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                     to={`${employer ? "/app/kandydaci" : "/app/aplikacje"}/${a.id}`}
                   >
                     {employer ? a.candidateName : a.jobTitle}
+                    {employer && (
+                      <span aria-hidden="true" className="ms-3 text-sm underline">
+                        Otwórz zgłoszenie →
+                      </span>
+                    )}
                   </Link>
                   <p className="my-3 text-muted-foreground">
                     {employer

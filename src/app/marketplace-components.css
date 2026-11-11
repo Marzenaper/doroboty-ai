@@ -126,10 +126,10 @@
 }
 .pp-category-tab.pp-selected {
   background: var(--pp-ink);
-  color: white;
+  color: var(--gui-accent-text);
 }
 .pp-category-tab.pp-selected small {
-  color: #e6e3e3;
+  color: var(--gui-accent-text);
 }
 .pp-category-tab:hover:not(.pp-selected) {
   background: var(--pp-surface);
@@ -341,6 +341,7 @@
 }
 .pp-save-button:hover {
   background: var(--pp-fact);
+  color: var(--gui-accent-text);
 }
 .pp-salary-tag {
   background: var(--pp-fact);
@@ -437,7 +438,7 @@
 }
 .pp-page-button[aria-current="page"] {
   background: var(--pp-ink);
-  color: white;
+  color: var(--gui-accent-text);
 }
 .pp-empty-state {
   text-align: center;
@@ -580,7 +581,7 @@
   .pp-filter-button > span:last-child:not(:first-child) {
     font-size: 10px;
     background: var(--pp-ink);
-    color: white;
+    color: var(--gui-accent-text);
     border-radius: var(--pp-radius-small);
     min-width: 17px;
     height: 17px;

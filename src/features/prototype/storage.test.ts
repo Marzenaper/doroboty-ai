@@ -21,7 +21,7 @@ describe("browser persistence and recovery", () => {
   it("round-trips a complete valid scenario", () => {
     const storage = memory();
     const s = initialState();
-    saveState(storage, s);
+    saveState(storage, serializeState(s), null);
     expect(readState(storage).state).toEqual(s);
     expect(parseState(serializeState(s))).toEqual(s);
   });
@@ -53,14 +53,39 @@ describe("browser persistence and recovery", () => {
         throw new Error("QuotaExceededError");
       },
     };
-    expect(() => saveState(storage, initialState())).toThrow("Wyeksportuj");
+    expect(() => saveState(storage, serializeState(initialState()), old)).toThrow("Wyeksportuj");
     expect(storage.getItem()).toBe(old);
+  });
+  it("preserves the first tab's save when a stale tab tries to overwrite it", () => {
+    const storage = memory();
+    const first = readState(storage);
+    const second = readState(storage);
+    const saved = serializeState(first.state);
+    saveState(storage, saved, first.stored);
+    expect(() => saveState(storage, serializeState(second.state), second.stored)).toThrow(
+      "w innej karcie",
+    );
+    expect(storage.getItem(STORAGE_KEY)).toBe(saved);
+  });
+  it("refuses to produce a scenario file larger than the import limit", () => {
+    const state = initialState();
+    const base = serializeState(state).length;
+    const fixture = { ...state, padding: "ą".repeat(MAX_IMPORT_BYTES - base) };
+    expect(() => serializeState(fixture)).toThrow("limit 2 MB");
   });
   it("rejects invalid references and oversized files", () => {
     const s = initialState();
     s.saved = [{ candidateId: "missing", jobId: s.jobs[0].id }];
     expect(() => parseState(JSON.stringify(s))).toThrow("Dotychczasowy stan");
     expect(() => parseState(" ".repeat(MAX_IMPORT_BYTES + 1))).toThrow("za duży");
+  });
+  it("reopens an older, pretty-printed export at the exact byte limit", () => {
+    const state = initialState();
+    const legacy = JSON.stringify({ ...state, theme: "dark" }, null, 2);
+    const raw = legacy.padEnd(MAX_IMPORT_BYTES - Buffer.byteLength(legacy) + legacy.length);
+    expect(Buffer.byteLength(raw)).toBe(MAX_IMPORT_BYTES);
+    expect(parseState(serializeState(parseState(raw)))).toEqual(state);
+    expect(() => parseState(raw + " ")).toThrow("za duży");
   });
   it("accepts legacy appearance preferences without changing scenario data", () => {
     const state = initialState();

@@ -225,6 +225,12 @@ header a[aria-label="DoRoboty.ai — strona główna"] > svg {
 .pp-offer-hero h1 {
   max-width: 58%;
 }
+.neon-home-cta,
+.pp-search-submit,
+.pp-detail-button {
+  --control-hover-bg: var(--pp-action-hover);
+  --control-hover-text: var(--gui-accent-text);
+}
 .pp-search-submit,
 .pp-detail-button {
   color: #17131b;

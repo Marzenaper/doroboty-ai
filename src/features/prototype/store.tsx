@@ -1,6 +1,15 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { initialState, transition, type Action, type State } from "./model";
-import { parseState, readState, saveState, type StoragePort } from "./storage";
+import {
+  parseState,
+  readState,
+  saveState,
+  scenarioSize,
+  serializeState,
+  StorageConflictError,
+  STORAGE_WARNING_BYTES,
+  type StoragePort,
+} from "./storage";
 function browserStorage(): StoragePort | null {
   try {
     return window.localStorage;
@@ -15,18 +24,27 @@ function useStore() {
   const [error, setError] = useState("");
   const [blocked, setBlocked] = useState(loaded.blocked);
   const latest = useRef(state);
+  const stored = useRef(loaded.stored);
+  const [nearLimit, setNearLimit] = useState(
+    () => scenarioSize(serializeState(loaded.state)) >= STORAGE_WARNING_BYTES,
+  );
   function commit(next: State, replace = false) {
+    const raw = serializeState(next);
+    if (!blocked || replace) {
+      try {
+        saveState(browserStorage(), raw, stored.current);
+        stored.current = raw;
+        setIssue("");
+        if (replace) setBlocked(false);
+      } catch (e) {
+        if (e instanceof StorageConflictError) throw e;
+        setIssue((e as Error).message);
+      }
+    }
     latest.current = next;
     setState(next);
     setError("");
-    if (blocked && !replace) return;
-    try {
-      saveState(browserStorage(), next);
-      setIssue("");
-      if (replace) setBlocked(false);
-    } catch (e) {
-      setIssue((e as Error).message);
-    }
+    setNearLimit(scenarioSize(raw) >= STORAGE_WARNING_BYTES);
   }
   function run(action: Action) {
     try {
@@ -56,14 +74,26 @@ function useStore() {
   }, []);
   return {
     state,
-    issue,
+    issue:
+      issue ||
+      (nearLimit
+        ? "Scenariusz zbliża się do limitu 2 MB. Przed dodaniem kolejnych obrazów usuń niepotrzebne załączniki lub wybierz mniejsze pliki."
+        : ""),
     error,
     blocked,
     original: loaded.original,
     run,
     importState,
     clearError: () => setError(""),
-    reset: () => commit(initialState(), true),
+    reset: () => {
+      try {
+        commit(initialState(), true);
+        return true;
+      } catch (e) {
+        setError((e as Error).message);
+        return false;
+      }
+    },
   };
 }
 type Store = ReturnType<typeof useStore>;

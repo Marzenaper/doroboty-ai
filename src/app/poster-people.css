@@ -138,6 +138,7 @@ footer {
 }
 .workspace-avatar {
   background: #ffe0f7;
+  color: var(--gui-accent-text);
   border-radius: 10px;
   flex-shrink: 0;
 }
@@ -222,7 +223,7 @@ footer {
   max-width: 100%;
   padding: 3px 12px;
   border-radius: 18px;
-  color: var(--gui-text);
+  color: var(--gui-accent-text);
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 600;

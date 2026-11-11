@@ -7,9 +7,30 @@ async function choose(page: Page, name: string) {
   await page.goto("/#/auth/sign-in");
   await page.getByRole("button", { name: `Wejdź jako ${name}`, exact: true }).click();
 }
+async function completeProject(page: Page) {
+  const project = page.getByRole("region", { name: "Twój projekt", exact: true });
+  await expect(page.getByLabel("Dlaczego pasujesz do tej roli?")).toHaveCount(0);
+  await project.getByRole("button", { name: "Rozpocznij rozmowę", exact: true }).click();
+  const responses = [
+    "Prowadziłam badania, a zespół przygotował integrację.",
+    "Porównywałam odpowiedzi modelu z przykładowymi zgłoszeniami.",
+    "Zdecydowałam o sprawdzeniu wyniku przed zapisem.",
+  ];
+  for (const [index, text] of responses.entries()) {
+    await project.getByRole("textbox").fill(text);
+    await project
+      .getByRole("button", {
+        name: index === 2 ? "Pokaż opis projektu" : "Następne pytanie",
+        exact: true,
+      })
+      .click();
+  }
+  await project.getByRole("button", { name: "Zatwierdź opis projektu", exact: true }).click();
+}
 async function application(page: Page) {
   await choose(page, "Anna Kowalska");
   await page.goto("/#/aplikuj/ai-product-manager");
+  await completeProject(page);
   await page
     .getByLabel("Dlaczego pasujesz do tej roli?")
     .fill(
@@ -62,6 +83,7 @@ for (const [name, filename] of [
       "target",
       "_blank",
     );
+    await completeProject(page);
     await page
       .getByLabel("Dlaczego pasujesz do tej roli?")
       .fill("Mam doświadczenie w rozwoju produktów i automatyzacji obsługi zgłoszeń.");
@@ -117,6 +139,7 @@ test("published job → saved offer/draft → submitted application → employer
   await page.getByRole("link", { name: "Product Designer do automatyzacji", exact: true }).click();
   await page.getByRole("button", { name: "Zapisz ofertę", exact: true }).click();
   await page.getByRole("link", { name: "Aplikuj", exact: true }).click();
+  await completeProject(page);
   const answer = page.getByLabel("Dlaczego pasujesz do tej roli?");
   const draftAnswer =
     "Przeprowadziłam badania z użytkownikami i wdrożyłam automatyzację. Czas obsługi skrócił się o 30%.";
@@ -319,6 +342,7 @@ test("application submission explains short answers and missing approval without
 }) => {
   await choose(page, "Anna Kowalska");
   await page.goto("/#/aplikuj/ai-product-manager");
+  await completeProject(page);
   const answer = page.getByLabel("Dlaczego pasujesz do tej roli?");
   const send = page.getByRole("button", { name: "Wyślij aplikację", exact: true });
   await answer.fill("krótka odpowiedź");
@@ -368,6 +392,7 @@ for (const width of [1440, 375]) {
     await page.goto(`/#/aplikuj/${job.slug}`);
     await page.reload();
     const form = page.locator("main form");
+    await completeProject(page);
     const answer = page.getByLabel("Dlaczego pasujesz do tej roli?");
     await expect(answer).toHaveValue(draft.answer);
     await expect(form.getByRole("textbox")).toHaveCount(1);
@@ -810,6 +835,7 @@ for (const width of [1280, 390]) {
     await expect(offer).toContainText("BrightLabs");
     await expect(offer).toContainText("Hybrydowo");
     const form = page.getByRole("form", { name: "Twoja aplikacja", exact: true });
+    await completeProject(page);
     const answer = form.getByLabel("Dlaczego pasujesz do tej roli?");
     const text = "Prowadziłam badania i wdrożenie automatyzacji obsługi zgłoszeń w produkcie B2B.";
     await answer.fill(text);
@@ -845,6 +871,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.emulateMedia({ reducedMotion });
     await choose(page, "Anna Kowalska");
     await page.goto("/#/aplikuj/ai-product-manager");
+    await completeProject(page);
     const answer = page.getByLabel("Dlaczego pasujesz do tej roli?");
     await answer.fill("krótko");
     await page.getByRole("button", { name: "Wyślij aplikację", exact: true }).click();
