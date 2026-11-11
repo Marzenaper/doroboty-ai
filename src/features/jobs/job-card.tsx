@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { ArrowUpRight, Bookmark, MapPin, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "@/features/prototype/store";
+import { trackOfferLinkClick } from "@/features/prototype/analytics";
 import type { JobWithCompany } from "./types";
 import { categoryLabels, functionLabels, remoteLabels, seniorityLabels } from "./presentation";
 import { CompanyLogo } from "./company-logo";
@@ -56,7 +57,11 @@ export function JobCard({ job, saved }: { job: JobWithCompany; saved?: boolean }
           )}
         </div>
         <SalaryFact job={job} />
-        <Link className="pp-detail-button" data-analytics-offer-link to={`/oferty/${job.slug}`}>
+        <Link
+          className="pp-detail-button"
+          to={`/oferty/${job.slug}`}
+          onClick={() => trackOfferLinkClick(job.id)}
+        >
           Zobacz rolę <ArrowUpRight className="pp-icon" />
         </Link>
       </div>

@@ -1,4 +1,6 @@
-import { HashRouter, Routes, Route, Navigate } from "react-router";
+import { useEffect, useRef } from "react";
+import { HashRouter, Routes, Route, Navigate, useLocation } from "react-router";
+import { trackPageview } from "./analytics";
 import { PrototypeProvider } from "./store";
 import { Shell, NotFound } from "./shell";
 import HomePage from "./home";
@@ -147,10 +149,22 @@ function AppRoutes() {
     </Routes>
   );
 }
+function PageAnalytics() {
+  const { pathname } = useLocation();
+  const lastPath = useRef<string>(undefined);
+  useEffect(() => {
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
+    trackPageview();
+  }, [pathname]);
+  return null;
+}
+
 export function App() {
   return (
     <PrototypeProvider>
       <HashRouter>
+        <PageAnalytics />
         <AppRoutes />
       </HashRouter>
     </PrototypeProvider>
