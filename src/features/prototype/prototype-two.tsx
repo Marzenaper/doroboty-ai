@@ -69,8 +69,20 @@ export default function PrototypeTwo() {
       <section className="prototype-two-panel" aria-labelledby="p2-purpose">
         <h2 id="p2-purpose">Dlaczego powstała druga wersja?</h2>
         <p>
-          W prototypie 1 zbieraliśmy opis projektu przez ogólne pytania. W symulacji nowego CV
-          pytania nie wychwyciły deklaracji „30%”, a rekruter otrzymywał długi opis do przeczytania.
+          W pierwszej wersji kandydat odpowiadał na przygotowane pytania o swój projekt, a rekruter
+          otrzymywał pełny opis odpowiedzi. Sprawdziliśmy ten przebieg na trzech fikcyjnych
+          historiach, odgrywanych przez AI.
+        </p>
+        <p>
+          W jednej historii Marta, fikcyjna analityczka biznesowa, napisała w CV, że jej zespół
+          wdrożył asystenta AI i skrócił czas obsługi zgłoszeń klientów o 30%. Pierwszy prototyp
+          zapytał ogólnie o jej pracę, ale nie zapytał, jak zmierzono te 30%, kto wykonał pomiar ani
+          jaki był osobisty udział Marty. Zastrzeżenie, że Marta nie zna metody pomiaru, podało
+          dopiero AI odgrywające kandydatkę — nie wydobył go mechanizm pytań.
+        </p>
+        <p>
+          Rekruter otrzymywał też odpowiedzi w długim opisie. Symulacja pokazała potrzebę
+          sprawdzenia czytelniejszego układu, ale nie zmierzyła czasu pracy prawdziwego rekrutera.
         </p>
         <p>
           Prototyp 2 rozwija tę samą rozmowę: dopytuje o konkretne deklaracje z CV i porządkuje
