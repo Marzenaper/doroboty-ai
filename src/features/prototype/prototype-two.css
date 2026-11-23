@@ -76,6 +76,12 @@
 .prototype-two-source {
   white-space: pre-wrap;
 }
+.prototype-two-view-guide {
+  display: grid;
+  gap: 14px;
+  padding-left: 24px;
+  line-height: 1.65;
+}
 @media (max-width: 700px) {
   .prototype-two {
     padding: 24px 16px;

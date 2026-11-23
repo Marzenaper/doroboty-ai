@@ -66,6 +66,18 @@ export default function PrototypeTwo() {
     <main className="prototype-two">
       <p className="prototype-two-kicker">Prototyp 2 · pytania do CV i karta odpowiedzialności</p>
       <h1>Od deklaracji do konkretu</h1>
+      <section className="prototype-two-panel" aria-labelledby="p2-purpose">
+        <h2 id="p2-purpose">Dlaczego powstała druga wersja?</h2>
+        <p>
+          W prototypie 1 zbieraliśmy opis projektu przez ogólne pytania. W symulacji nowego CV
+          pytania nie wychwyciły deklaracji „30%”, a rekruter otrzymywał długi opis do przeczytania.
+        </p>
+        <p>
+          Prototyp 2 rozwija tę samą rozmowę: dopytuje o konkretne deklaracje z CV i porządkuje
+          odpowiedzi w karcie odpowiedzialności. Sprawdzamy osobno jakość pytań oraz sposób
+          prezentacji. Oszczędność czasu pozostaje do zbadania.
+        </p>
+      </section>
       <p>
         Pracuj wyłącznie na fikcyjnym CV. Pytania powstają lokalnie według reguł; nie wysyłamy
         treści do modelu AI. Odpowiedzi są deklaracją kandydata, nie potwierdzeniem kompetencji.
@@ -209,6 +221,27 @@ export default function PrototypeTwo() {
         <section className="prototype-two-panel">
           <h2>Materiały do pierwszej oceny</h2>
           <p>
+            Trzy widoki poniżej służą do porównania materiałów jednej osoby. Nie są trzema ocenami
+            kandydata ani trzema różnymi prototypami.
+          </p>
+          <ol className="prototype-two-view-guide">
+            <li>
+              <strong>Samo CV — punkt odniesienia.</strong> Zobacz, co rekruter może ustalić przed
+              rozmową z asystentem i czego brakuje.
+            </li>
+            <li>
+              <strong>CV i pełny opis — dodatkowe informacje.</strong> Przeczytaj zatwierdzone
+              odpowiedzi z prototypu 2 w ciągłej liście. Porównanie z samym CV pokazuje, jakie
+              informacje wniosły pytania. To nie jest zapis rozmowy z prototypu 1.
+            </li>
+            <li>
+              <strong>CV i karta odpowiedzialności — inna prezentacja.</strong> Znajdź te same
+              odpowiedzi w osobnych blokach. Porównanie z pełnym opisem służy sprawdzeniu, czy układ
+              ułatwia poprawną i szybką ocenę. Nie dodaje nowych faktów ani nie skraca automatycznie
+              tekstu.
+            </li>
+          </ol>
+          <p>
             Brak oceny procentowej wkładu. Karta porządkuje słowa kandydata i nie potwierdza ich
             prawdziwości.
           </p>
@@ -232,6 +265,13 @@ export default function PrototypeTwo() {
               </Button>
             ))}
           </div>
+          <p role="status">
+            {view === "cv"
+              ? "Teraz: samo CV, bez odpowiedzi na dodatkowe pytania."
+              : view === "full"
+                ? "Teraz: CV i wszystkie zatwierdzone odpowiedzi w pełnym opisie. CV otworzysz poniżej."
+                : "Teraz: CV i te same odpowiedzi w karcie odpowiedzialności. CV otworzysz poniżej, a pytanie źródłowe przy każdej odpowiedzi."}
+          </p>
           <details open={view === "cv"}>
             <summary>CV źródłowe</summary>
             <p className="prototype-two-source">{data.cv}</p>
