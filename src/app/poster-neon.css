@@ -46,6 +46,14 @@
   --gui-control: #17131b;
   --gui-control-hover: #352735;
   --gui-danger: #ffb5b5;
+  --gui-error: #ffb5b5;
+  --gui-error-transparent: #482a36;
+  --gui-success: #9de7bf;
+  --gui-success-transparent: #203e35;
+  --gui-warning: #f4d491;
+  --gui-warning-transparent: #403526;
+  --gui-color-3-transparent: #482438;
+  --gui-control-disabled: #463646;
   --gui-radius-xs: 2px;
   --gui-radius-s: 2px;
   --gui-radius-m: 4px;
@@ -322,6 +330,31 @@ html .pp-job-tags span {
   color: #17131b;
   background: #c9bdaf;
   border-radius: 2px;
+}
+/* Keep feedback on dark surfaces; legacy pastel fills otherwise hide cream text. */
+html .prototype-notice {
+  background: var(--gui-color-1-transparent);
+  color: var(--gui-text);
+  border: 1px solid var(--gui-accent);
+  border-radius: var(--gui-radius-s);
+}
+html .prototype-error,
+html .error-message {
+  background: var(--gui-error-transparent);
+  color: var(--gui-error);
+  border-color: var(--gui-error);
+}
+html .application-actions .application-send:disabled,
+html [data-slot="button"]:disabled,
+html [data-slot="button"][data-disabled] {
+  background: var(--gui-control-disabled);
+  color: var(--gui-text-muted);
+  opacity: 1;
+}
+html input::placeholder,
+html textarea::placeholder {
+  color: var(--gui-text-muted);
+  opacity: 1;
 }
 html .pp-view-link[aria-current="page"] {
   color: #17131b;
