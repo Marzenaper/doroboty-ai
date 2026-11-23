@@ -4,6 +4,7 @@ import { trackPageview } from "./analytics";
 import { PrototypeProvider } from "./store";
 import { Shell, NotFound } from "./shell";
 import HomePage from "./home";
+import PrototypeTwo from "./prototype-two";
 import MethodologyPage from "./methodology";
 import { JobsPage, JobPage, CompanyPage } from "./marketplace";
 import {
@@ -24,6 +25,7 @@ function AppRoutes() {
     <Routes>
       <Route element={<Shell />}>
         <Route index element={<HomePage />} />
+        <Route path="prototyp-2" element={<PrototypeTwo />} />
         <Route path="oferty" element={<JobsPage />} />
         <Route path="oferty/:slug" element={<JobPage />} />
         <Route path="firmy/:slug" element={<CompanyPage />} />

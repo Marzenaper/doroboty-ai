@@ -88,4 +88,8 @@ Stable IDs are retained, including explicit removed entries. The legacy duplicat
 
 ## Current implementation limits
 
+### P2-01 — CV questions and responsibility card (local simulation)
+
+`/#/prototyp-2` preserves the original application flow. Synthetic CV input generates five fixed evidence questions and up to three questions quoting percentage claims. A project sentence contextualizes the first question. This is bounded local text extraction, not general AI CV analysis. Candidate answers are editable and approved before recruiter view. The CV/full-description/card views use the same approved text and retain source questions; no contribution percentages or competency inference. Drafts persist under a separate validated localStorage key and can be downloaded. No employer submission, cloud sync or real participant timing. Sources: `prototype-two.tsx`, `cv-questions.ts`; unit coverage: `cv-questions.test.ts`.
+
 No real login, email, binary upload, production CVs, provider AI, confidential roles, backend, collaboration across devices, cloud analytics or live experiment measurement. A static URL shares code, not local state; exported JSON contains the entire scenario. Human testing, publishing, CI results and course approval must be verified separately.

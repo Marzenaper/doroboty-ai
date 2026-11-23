@@ -1,0 +1,89 @@
+.prototype-two {
+  max-width: 1120px;
+  margin: auto;
+  padding: 32px 24px;
+  display: grid;
+  gap: 24px;
+}
+.prototype-two h1 {
+  font-family: var(--gui-font-brand);
+  font-size: clamp(36px, 6vw, 64px);
+}
+.prototype-two h2 {
+  font-size: 25px;
+}
+.prototype-two h3 {
+  font-size: 19px;
+  color: var(--gui-accent);
+}
+.prototype-two p {
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.prototype-two-kicker {
+  color: var(--gui-accent);
+}
+.prototype-two-panel {
+  border: 1px solid var(--gui-edge);
+  background: var(--gui-surface);
+  padding: 24px;
+  display: grid;
+  gap: 20px;
+}
+.prototype-two label {
+  display: grid;
+  gap: 10px;
+  line-height: 1.6;
+}
+.prototype-two-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.prototype-two-actions button {
+  white-space: normal;
+  text-align: left;
+}
+.prototype-two-actions a {
+  color: var(--gui-link);
+  text-decoration: underline;
+  padding: 12px 0;
+}
+.prototype-two-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.prototype-two-grid article {
+  padding: 18px;
+  border: 1px solid var(--gui-edge);
+  background: var(--gui-control);
+  display: grid;
+  gap: 12px;
+}
+.prototype-two small {
+  color: var(--gui-text-muted);
+}
+.prototype-two details {
+  border-top: 1px solid var(--gui-edge);
+  padding-top: 12px;
+}
+.prototype-two summary {
+  cursor: pointer;
+  color: var(--gui-link);
+}
+.prototype-two-source {
+  white-space: pre-wrap;
+}
+@media (max-width: 700px) {
+  .prototype-two {
+    padding: 24px 16px;
+  }
+  .prototype-two-panel {
+    padding: 16px;
+  }
+  .prototype-two-grid {
+    grid-template-columns: 1fr;
+  }
+}
